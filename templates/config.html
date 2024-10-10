@@ -1,0 +1,45 @@
+<!-- Modal -->
+<div class="modal fade" id="configModal" tabindex="-1" aria-labelledby="configModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Editar meus dados</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="{% url 'demands:editUser' user.id %}" method="post">
+        {% csrf_token %}
+        <div class="modal-body">
+          {% comment %} FORMULÁRIO {% endcomment %}
+          <div class="row mb-3">
+            <div class="col">
+              <label for="first_name" class="form-label">Nome</label>
+              <input type="text" class="form-control" name="first_name" value="{{user.first_name}}" placeholder="João" aria-label="Nome">
+              <div class="form-text">Digite seu nome</div>
+            </div>
+            <div class="col">
+              <label for="last_name" class="form-label">Sobrenome</label>
+              <input type="text" class="form-control" name="last_name" value="{{user.last_name}}" placeholder="Maria" aria-label="Sobrenome">
+              <div class="form-text">Digite seu sobrenome</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" name="email" value="{{user.email}}" placeholder="email@exemplo.com" aria-label="Email">
+              <div class="form-text">Digite um email válido</div>
+            </div>
+            <div class="col">
+              <label for="password" class="form-label">Senha</label>
+              <input type="password" class="form-control" name="password" value="" placeholder="" aria-label="password">
+              <div class="form-text">Digite sua senha</div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
+          <button type="submit" class="btn btn-success">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

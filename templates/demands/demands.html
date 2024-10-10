@@ -1,0 +1,151 @@
+{% include 'demands/new_demand.html'%}
+
+<div class="card mt-3">
+  <div class="card-body">
+    <h5 class="card-title mb-3">Minhas demandas</h5>
+    <div class="container mx-0">
+      <form action="{% url 'demands:search' %}" method="get">
+        <div class="row mb-3">
+          <input type="number" name="demand_id" placeholder="N. Demanda" class="form-control" style="width: 130px; margin-right: 5px">
+          <input type="date" name="startDate" class="form-control" style="width: 150px; margin-right: 5px">
+          <input type="date" name="endDate" class="form-control" style="width: 150px; margin-right: 5px">
+          <select class="form-select" aria-label="Tipo" name="search_type" style="width: 130px; margin-right: 5px">
+            <option selected value="">Tipo</option>
+            <option value="1">Demanda</option>
+            <option value="2">Atividades</option>
+          </select>
+          <select class="form-select" name="action" aria-label="Tipo" style="width: 130px; margin-right: 5px">
+            <option selected value="">Ação</option>
+            <option value="1">Pesquisar</option>
+            <option value="2">Gerar PDF</option>
+          </select>
+          <button type="submit" class="btn py-button btn-sm" style="width: 90px" >
+            OK!
+          </button>
+        </div>
+    </form>
+    </div>
+    {% if demands|length > 0 %}
+      <div class="table-responsive ">
+        <table class="table table-bg-indigo table-striped table-hover border-1 ">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Demanda</th>
+              <th scope="col">Título</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Atividades</th>
+              <th scope="col">Tempo gasto</th>
+              <th scope="col">Status</th>
+              <th scope="col">Prazo</th>
+              <th scope="col">Criado em</th>
+              <th scope="col">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for demand in demands %}
+            <tr>
+              <td width="1px">{{demand.id}}</th>
+              <td width="1px">{{demand.demand}}</td>
+              <td>{{demand.title}}</td>
+              <td width="155px">{{demand.demand_type}}</td>
+              <td width="54px">{{demand.activity_count}}</td>
+              <td width="120px">{{demand.total_time}}</td>
+              <td width="140px">{{demand.status}}</td>
+              <td width="1px">{{demand.dueDate|date:"d/m/Y"}}</td>
+              <td width="100px">{{demand.createdAt|date:"d/m/Y"}}</td>
+              <td width="110px">
+                <a href="/demands/view/{{demand.id}}"  class="btn py-button" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" rel="noopener noreferrer">
+                    Editar
+                </a>
+                <a 
+                href="{{demand.url}}" 
+                target="_blank" rel="noopener noreferrer" 
+                class="btn btn-outline-secondary" 
+                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"  
+                data-bs-toggle="tooltip" data-bs-title="Visualizar demanda no sistema principal">
+                    URL
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="col mb-3">
+        Nenhuma demanda cadastrada
+      </div>
+    {% endif %}
+   
+    <!-- Paginação -->
+    <div class="row">
+      <div class="col">
+        <select class="form-select" aria-label="Quantidade" id="limit-select" onchange="changeLimit()"
+          style="width: 80px;">
+          <option value="10" {% if limit == "10" %}selected{% endif %}>10</option>
+          <option value="20" {% if limit == "20" %}selected{% endif %}>20</option>
+          <option value="50" {% if limit == "50" %}selected{% endif %}>50</option>
+          <option value="100" {% if limit == "100" %}selected{% endif %}>100</option>
+        </select>
+      </div>
+      <div class="col">
+        <nav aria-label="Page navigation example mr-100">
+          <ul class="pagination justify-content-end">
+            <!-- Anterior -->
+
+            {% if demands.has_previous %}
+            <li class="page-item">
+              <a class="page-link py-link-outline" href="?page={{ demands.previous_page_number }}{% if limit %}&limit={{limit}}{% endif %}">Anterior</a>
+            </li>
+            {% else %}
+            <li class="page-item py-link-outline">
+              <a class="page-link disabled" href="#">Anterior</a>
+            </li>
+            {% endif %}
+
+            <!-- Range de paginas -->
+
+            {% for num in demands.paginator.page_range %}
+            {% if demands.number == num %}
+            <li class="page-item py-link"><a class="page-link py-link" href="#">{{ num }}</a></li>
+            {% else %}
+            <li class="page-item">
+              <a class="page-link py-link-outline" href="?page={{ num }}{% if limit %}&limit={{limit}}{% endif %}">{{ num }}</a>
+            </li>
+            {% endif %}
+            {% endfor %}
+
+            <!-- Próximo -->
+            {% if demands.has_next %}
+            <li class="page-item">
+              <a class="page-link py-link-outline" href="?page={{ demands.next_page_number }}{% if limit %}&limit={{limit}}{% endif %}">Próximo</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+              <a class="page-link py-link-outline" href="#">Próximo</a>
+            </li>
+            {% endif %}
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% comment %} Scripts {% endcomment %}
+<script>
+  function changeLimit() {
+    var limit = document.getElementById("limit-select").value;
+    var url = new URL(window.location.href); // Captura a URL atual
+    url.searchParams.set('limit', limit);   // Adiciona ou atualiza o parâmetro 'limit'
+    window.location.href = url.toString();  // Redireciona para a nova URL
+  }
+  {% comment %} O modal abre automático se selecionar uma demanda {% endcomment %}
+  {% if demand %}
+  document.addEventListener("DOMContentLoaded", function(){
+    var myModal = new bootstrap.Modal(document.getElementById('new_demand_modal'));
+    myModal.show();
+  });
+  {% endif %}
+</script>

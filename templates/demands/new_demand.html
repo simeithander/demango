@@ -1,0 +1,124 @@
+<!-- Button trigger modal -->
+<button type="button" class="btn py-button" data-bs-toggle="modal" data-bs-target="#new_demand_modal">
+  Cadastrar demanda
+</button>
+<!-- Modal -->
+<div class="modal {% if demand %} modal-xl {% endif %} fade" id="new_demand_modal" tabindex="-1"
+  aria-labelledby="new_demand_modal" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="new_demand_modal">
+
+          {% if demand %}
+          EDITAR: {{demand.title|upper}} <br />
+          <span class="badge text-bg-success">{{demand.createdAt|date:"d/m/Y"}}</span>
+          <span class="badge text-bg-danger">{{total_time}}</span>
+          {% else %}
+          Cadastrar Demanda
+          {% endif %}
+
+        </h1>
+        <a href="/" class="btn-close" rel="noopener noreferrer">
+        </a>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="{% if demand %} row {% else %} col {% endif %}">
+            <div class="col">
+              <form
+                action="{% if demand %} {% url 'demands:edit' demand.id %} {% else %} {% url 'demands:create' %} {% endif %}"
+                method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                  <label for="demand_type" class="form-label">Tipo da demanda</label>
+                    <select class="form-select" id="demand_type" name="demand_type" aria-label="Tipo" required>
+                      <option value="" selected>Selecione um tipo</option>
+                      {% for value, label in demand_types %}
+                      <option value="{{ value }}" "{% if demand.demand_type == value %} selected {% endif %}">{{ label }}
+                      </option>
+                      {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                  <label for="title" class="form-label">Título</label>
+                  <input type="text" class="form-control" id="title" name="title" aria-describedby="titleHelp"
+                    value="{% if demand %}{{demand.title}}{% endif %}" required>
+                  <div id="titleHelp" class="form-text">Título da demanda.</div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col">
+                    <label for="demand" class="form-label">Demanda</label>
+                    <input type="number" class="form-control" id="demand" name="demand" aria-describedby="demandHelp"
+                      oninput="this.value = this.value.replace(/[^0-9.]/g, '');"
+                      value="{% if demand %}{{demand.demand}}{% endif %}" required>
+                    <div id="demandHelp" class="form-text">Número da demanda.</div>
+                  </div>
+                  <div class="col">
+                    <label for="status" class="form-label">Status</label>
+                    <select class="form-select" id="status" name="status" aria-label="Status" required>
+                      <option value="" selected>Selecione um status</option>
+                      {% for value, label in status_choices %}
+                      <option value="{{ value }}" "{% if demand.status == value %} selected {% endif %}">{{ label }}
+                      </option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="url" class="form-label">URL</label>
+                  <input type="text" class="form-control" id="url" name="url" aria-describedby="urlHelp"
+                    value="{% if demand %}{{demand.url}}{% endif %}">
+                  <div id="urlHelp" class="form-text">URL da demanda para o seu sistema</div>
+                </div>
+                <div class="mb-3">
+                  <div class="form-floating">
+                    <textarea class="form-control" placeholder="Escreva o objetivo da demanda" id="objectiveHelp"
+                      name="objective" style="height: 100px" aria-describedby="objectiveHelp"
+                      required>{% if demand %}{{demand.objective}}{% endif %}</textarea>
+                    <label for="objectiveHelp">Objetivo</label>
+                    <div id="objectiveHelp" class="form-text">Descreva brevemente o objetivo da demanda.</div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="dueDate" class="form-label">Previsão</label>
+                  <input type="date" class="form-control" id="dueDate" name="dueDate" aria-describedby="dueDateHelp"
+                    required {% if demand %} {% else %} min="{{ today }}" {% endif %}
+                    value="{% if demand %}{{ demand.dueDate|date:'Y-m-d' }}{% else %}{{ today }}{% endif %}">
+                  <div id="dueDateHelp" class="form-text">Data com a previsão de entrega.</div>
+                </div>
+                <div class="mb-3">
+                  <div class="form-floating">
+                    <textarea class="form-control" placeholder="Escreva o resumo das atividades da demanda" id="summary"
+                      name="summary" style="height: 100px"
+                      aria-describedby="objectiveHelp">{% if demand %}{{demand.summary}}{% endif %}</textarea>
+                    <label for="summary">Resumo das atividades</label>
+                    <div id="summaryHelp" class="form-text">Descreva brevemente um resumo de suas atividades na demanda.
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer px-0">
+                  <a href="/" rel="noopener noreferrer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
+                  </a>
+                  <button type="submit" class="btn btn-success">
+                    {% if demand %}
+                    Editar demanda
+                    {% else %}
+                    Cadastrar demanda
+                    {% endif%}
+                  </button>
+                </div>
+              </form>
+            </div>
+            {% if demand %}
+            <div class="col">
+              {% include "demands/list_activities.html" %}
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

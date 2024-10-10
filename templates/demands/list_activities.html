@@ -1,0 +1,67 @@
+<div class="container">
+  <h5>Cadastrar atividade</h5>
+  <div class="container mb-3 mt-3 px-0">
+    <form action="{% url 'demands:createActivity' %}" method="post">
+      {% csrf_token %}
+      <input type="hidden" id="title" name="id" value="{{demand.id}}">
+      <div class="mb-3">
+        <label for="title" class="form-label">Atividade</label>
+        <input type="text" class="form-control" id="title" name="title" aria-describedby="titleHelp" value="" required>
+        <div id="titleHelp" class="form-text">Breve descrição da atividade</div>
+      </div>
+      <div class="mb-3" style="display: flex; flex-direction: row;">
+        <div style="margin-right: 24px;">
+          <label for="date" class="form-label">Data</label>
+          <input type="date" class="form-control" id="date" name="date" aria-describedby="dateHelp" value="" required>
+          <div id="dateHelp" class="form-text">Data da atividade</div>
+        </div>
+        <div>
+          <label for="time" class="form-label">Tempo</label>
+          <input type="text" class="form-control" id="time" name="time" aria-describedby="timeHelp" maxlength="5"
+            required>
+          <div id="timeHelp" class="form-text">Tempo gasto</div>
+        </div>
+      </div>
+      <button type="submit" class="btn py-button btn-sm" style="width: 90px">
+        Cadastrar
+      </button>
+    </form>
+  </div>
+  <h5>Atividades</h5>
+  <ul class="list-group mt-3">
+    {% if activities %}
+    {% for actvity in activities %}
+    <li class="list-group-item">
+      <div style="display: flex; flex-direction: row; justify-content: space-between;">
+        <div>
+          {{actvity.title}}
+          <br />
+          <span class="badge text-bg-info">{{actvity.date|date:"d/m/Y"}}</span>
+          <span class="badge text-bg-secondary"> {{actvity.time}}</span>
+        </div>
+        <form action="{% url 'demands:deleteActivity' actvity.id %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="demand_id" value="{{demand.id}}">
+          <button type="submit" class="btn btn-danger btn-sm mt-2 mb-2"> <i class="bi bi-trash"></i>
+          </button>
+        </form>
+      </div>
+    </li>
+    {% endfor %}
+    {% else %}
+    Nenhuma atividade cadastrada
+    {% endif %}
+  </ul>
+</div>
+
+<!-- JS -->
+
+<script>
+  document.getElementById('time').addEventListener('input', function (e) {
+    let value = e.target.value.replace(/\D/g, '');  // Remove caracteres não numéricos
+    if (value.length >= 3) {
+      value = value.slice(0, 2) + ':' + value.slice(2, 4);  // Insere os dois pontos no meio
+    }
+    e.target.value = value;
+  });
+</script>

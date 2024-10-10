@@ -1,0 +1,63 @@
+.bi {
+  vertical-align: -.125em;
+  fill: currentColor;
+}
+
+.py-button {
+  --bd-violet-bg: #712cf9;
+  --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+  --bs-btn-font-weight: 600;
+  --bs-btn-color: var(--bs-white);
+  --bs-btn-bg: var(--bd-violet-bg);
+  --bs-btn-border-color: var(--bd-violet-bg);
+  --bs-btn-hover-color: var(--bs-white);
+  --bs-btn-hover-bg: #6528e0;
+  --bs-btn-hover-border-color: #6528e0;
+  --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+  --bs-btn-active-color: var(--bs-btn-hover-color);
+  --bs-btn-active-bg: #5a23c8;
+  --bs-btn-active-border-color: #5a23c8;
+}
+
+.bd-mode-toggle {
+  z-index: 1500;
+}
+
+.bd-mode-toggle .dropdown-menu .active .bi {
+  display: block !important;
+}
+
+.table-bg-indigo {
+  background-color: indigo !important;
+  color: white; /* Opcional: muda o texto para branco */
+}
+
+.py-button {
+  background-color:#c9eb74;
+  color: #1c2700;
+  border: 0;
+}
+
+.py-button:hover {
+  background-color:#ebb044;
+  color: #1c2700
+}
+
+.py-link {
+  background-color:#c9eb74;
+  color: #1c2700;
+}
+
+.py-link:hover {
+  background-color:#ebb044;
+  color: #1c2700
+}
+
+.py-link-outline {
+  color: #8caf33;
+}
+
+.py-link-outline:hover {
+  color: #69812a;
+}
