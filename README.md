@@ -35,31 +35,33 @@ LOCAL:
  source .venv/bin/activate
 ```
 
-3 - Execute as dependencias
+3 - Copie crie o .env com base no env.example adicionando sua chave
+
+4 - Execute as dependencias
 
 ```
 pip install -r requirements.txt
 ```
 
-4 - Execute as migrações
+5 - Execute as migrações
 
 ```
 python3 manage.py migrate
 ```
 
-5 - Crie um usuário inicial
+6 - Crie um usuário inicial
 
 ```
 python3 manage.py createsuperuser
 ```
 
-6 - Execute
+7 - Execute
 
 ```
 python3 manage.py runserver
 ```
 
-7 - Acesse
+8 - Acesse
 
 ```
 http://127.0.0.1:8000/
@@ -71,18 +73,20 @@ DOCKER:
 
 2 - Execute
 
+3 - Copie crie o .env com base no env.example adicionando sua chave
+
 ```
 docker-compose up -d
 ```
 
-3 - Acesse o container e crie um super usuário
+4 - Acesse o container e crie um super usuário
 
 ```
 docker exec -it ID_CONTAINER bash
 python manage.py createsuperuser
 ```
 
-4 - Acesse:
+5 - Acesse:
 
 ```
 http://localhost:8000
