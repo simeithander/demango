@@ -73,7 +73,7 @@ DOCKER:
 1 - Instale o docker/docker-compose
 
 
-2 - Copie crie o .env com base no env.example adicionando sua chave
+2 - Crie o .env com base no env.example adicionando sua chave
 
 3 - Execute
 
