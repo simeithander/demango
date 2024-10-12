@@ -29,13 +29,14 @@ Demango é um sistema desenvolvido inteiramente em Django, voltado para a gestã
 LOCAL:
 
 1 - Crie uma env
+
 2 - Inicie:
 
 ```
  source .venv/bin/activate
 ```
 
-3 - Copie crie o .env com base no env.example adicionando sua chave
+3 - Crie o .env com base no env.example adicionando sua chave
 
 4 - Execute as dependencias
 
@@ -71,9 +72,10 @@ DOCKER:
 
 1 - Instale o docker/docker-compose
 
-2 - Execute
 
-3 - Copie crie o .env com base no env.example adicionando sua chave
+2 - Copie crie o .env com base no env.example adicionando sua chave
+
+3 - Execute
 
 ```
 docker-compose up -d
