@@ -368,7 +368,7 @@ def download_pdf(demands, user, startDate, endDate):
     y_position = height - 60
 
     # Adicionar o título principal no início do documento
-    p.setFont("Helvetica-Bold", 20)
+    p.setFont("Helvetica-Bold", 18)
     title = f"Relatório {user.first_name} {user.last_name} - {startDateFormated} a {endDateFormated}"
     p.drawString(60, y_position, title)
 
@@ -378,7 +378,7 @@ def download_pdf(demands, user, startDate, endDate):
     p.line(60, y_position, width - 60, y_position)
 
     # Espaçamento maior antes de continuar o documento
-    y_position -= 50
+    y_position -= 40
 
     # Agrupar demandas por demand_type
     grouped_demands = {}
@@ -394,7 +394,7 @@ def download_pdf(demands, user, startDate, endDate):
     for demand_type in demand_type_order:
         if demand_type in grouped_demands:
             # Adicionar o título da categoria (demand_type) no PDF
-            p.setFont("Helvetica-Bold", 18)
+            p.setFont("Helvetica-Bold", 15)
             p.drawString(60, y_position, demand_type)
             y_position -= 20
 
@@ -405,9 +405,15 @@ def download_pdf(demands, user, startDate, endDate):
 
             # Iterar sobre as demandas de cada tipo
             for demand in grouped_demands[demand_type]:
-                p.setFont("Helvetica-Bold", 15)
-                p.drawString(60, y_position, demand.demand + " - " + demand.title.upper())
-                y_position -= 30
+                p.setFont("Helvetica-Bold", 12)
+                wrapped_text_objective = textwrap.wrap(demand.demand + " - " + demand.title.upper(), width=80)
+                for line in wrapped_text_objective:
+                    p.drawString(60, y_position, line)
+                    y_position -= 15
+                    if y_position < 50:
+                        p.showPage()
+                        y_position = height - 60
+                y_position -= 10
 
                 p.setFont("Helvetica-Bold", 12)
                 p.drawString(60, y_position, "Objetivo:")
@@ -449,7 +455,7 @@ def download_pdf(demands, user, startDate, endDate):
                         p.showPage()
                         y_position = height - 60
 
-                y_position -= 20
+                y_position -= 10
                 p.setFont("Helvetica-Bold", 12)
                 p.drawString(60, y_position, "Atividades:")
                 y_position -= 15
@@ -471,7 +477,13 @@ def download_pdf(demands, user, startDate, endDate):
 
                     p.setFont("Helvetica", 12)
                     for title in titles:
-                        p.drawString(78, y_position, title)
+                        wrapped_text_objective = textwrap.wrap(title, width=80)
+                        for line in wrapped_text_objective:
+                            p.drawString(78, y_position, line)
+                            y_position -= 15
+                            if y_position < 50:
+                                p.showPage()
+                                y_position = height - 60
                         y_position -= 15
 
                         if y_position < 50:
