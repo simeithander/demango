@@ -11,6 +11,7 @@ class Demands(models.Model):
     DEMAND_CHOICES = [
         ('Projetos / Melhoria', 'Projetos / Melhoria'),
         ('QAS', 'QAS'),
+        ('Sustentação', 'Sustentação'),
         ('Outro', 'Outro')
     ]
 

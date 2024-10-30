@@ -83,7 +83,7 @@
                 <div class="mb-3">
                   <label for="dueDate" class="form-label">Previsão</label>
                   <input type="date" class="form-control" id="dueDate" name="dueDate" aria-describedby="dueDateHelp"
-                    required {% if demand %} {% else %} min="{{ today }}" {% endif %}
+                    required 
                     value="{% if demand %}{{ demand.dueDate|date:'Y-m-d' }}{% else %}{{ today }}{% endif %}">
                   <div id="dueDateHelp" class="form-text">Data com a previsão de entrega.</div>
                 </div>
