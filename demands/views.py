@@ -142,6 +142,9 @@ def search(request):
                     context = getContextWithoutQuery(request)
                     context.update({'demands': demands})
                     return render(request, 'index.html', context)
+                else:
+                    messages.add_message(request, messages.WARNING, 'Demanda não encontradas')
+                    return redirect('/')
             except Demands.DoesNotExist:
                 # Caso a demanda não seja encontrada
                 messages.add_message(request, messages.WARNING, 'Demandas não encontradas')
@@ -201,11 +204,6 @@ def search(request):
             except ValueError:
                 # Caso as datas estejam em um formato incorreto
                 messages.add_message(request, messages.WARNING, 'Formato de data inválido')
-                return redirect('/')
-
-            except Demands.DoesNotExist:
-                # Caso a demanda não seja encontrada
-                messages.add_message(request, messages.WARNING, 'Demandas não encontradas')
                 return redirect('/')
 
 @login_required()
