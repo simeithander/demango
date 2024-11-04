@@ -155,11 +155,8 @@ def search(request):
                 return redirect('/')
             try:
                 # Converte as strings de data para objetos datetime
-                start_date = datetime.strptime(startDate, '%Y-%m-%d')
-                end_date = datetime.strptime(endDate, '%Y-%m-%d')
-                
-                # Ajusta o final do intervalo para incluir o final do dia
-                end_date = end_date.replace(hour=23, minute=59, second=59)
+                start_date = timezone.make_aware(datetime.strptime(startDate, '%Y-%m-%d'))
+                end_date = timezone.make_aware(datetime.strptime(endDate, '%Y-%m-%d')).replace(hour=23, minute=59, second=59)
                 
                 # Pesquisa por Demanda
                 if search_type == '1':
@@ -185,9 +182,9 @@ def search(request):
                 # Pesquisa por Atividade
                 if search_type == '2':
                     # Filtra as demandas no intervalo de datas
-                    activities = Activity.objects.filter(createdAt__range=(start_date, end_date))
+                    activities = Activity.objects.filter(date__range=(start_date, end_date))
                     # Obtem as demandas relacionadas a essas atividades                
-                    demands = Demands.objects.filter(user=user, createdAt__range=(start_date, end_date)).distinct()
+                    demands = Demands.objects.filter(user=user, activities__in=activities).distinct()
                     for demand in demands:
                         activities = Activity.objects.filter(demand=demand)  # Obtém as atividades relacionadas
                         demand.activity_count = activities.count()
